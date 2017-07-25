@@ -1,0 +1,16 @@
+{
+  "name": "gatsby-source-buttercms",
+  "version": "0.0.0",
+  "description": "Gatsby source plugin for building websites using Butter CMS as a data source",
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "gatsby-source-plugin",
+    "butter",
+    "buttercms"
+  ],
+  "main": "index.js",
+  "repository": "git@github.com:rongierlach/gatsby-source-buttercms.git",
+  "author": "Ron Gierlach <rongierlach@gmail.com>",
+  "license": "GPL-3.0"
+}
