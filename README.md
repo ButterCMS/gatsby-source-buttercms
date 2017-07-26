@@ -12,7 +12,14 @@ module.exports = {
     {
       resolve: 'gatsby-source-buttercms',
       options: {
-        authToken: 'your_api_token'
+        authToken: 'your_api_token',
+        contentFields: {
+          keys: [ // Comma delimited list of content field keys.
+            'homepage_title',
+            'homepage_headline'
+          ],
+          test: 0 // Optional. Set to 1 to enable test mode for viewing draft content.
+        }
       }
     }
   ]
