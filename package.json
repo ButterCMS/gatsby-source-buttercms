@@ -15,5 +15,8 @@
   "license": "GPL-3.0",
   "dependencies": {
     "buttercms": "^1.0.17"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.23.0"
   }
 }
