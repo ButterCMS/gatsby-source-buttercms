@@ -23,42 +23,35 @@ module.exports = {
 
 ### Query Blog Posts
 ```GraphQL
-allButterPost {
-  edges {
-    node {
-      slug
-      url
-      published
-      created
-      status
-      title
-      body
-      summary
-      seo_title
-      meta_description
-      author {
+{
+  allButterPost {
+    edges {
+      node {
         slug
-        first_name
-        last_name
-        email
-        bio
+        url
+        published
+        created
+        status
         title
-        linkedin_url
-        facebook_url
-        pinterest_url
-        instagram_url
-        twitter_handle
-        profile_image
+        body
+        summary
+        seo_title
+        meta_description
+        author {
+          slug
+          first_name
+          last_name
+          email
+          bio
+          title
+          linkedin_url
+          facebook_url
+          pinterest_url
+          instagram_url
+          twitter_handle
+          profile_image
+        }
       }
-      categories {
-        slug
-        name
-      }
-      tags {
-        slug
-        name
-      }
-      featured_image
     }
   }
 }
