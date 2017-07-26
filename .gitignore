@@ -61,5 +61,12 @@ typings/
 # dotenv environment variables file
 .env
 
+# Build Path of Test Fixtures
+test/**/public
+.DS_Store
+
+# Package managers
+yarn.lock
+package-lock.json
 
 # End of https://www.gitignore.io/api/node
