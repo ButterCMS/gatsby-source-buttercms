@@ -1,6 +1,6 @@
 # gatsby-source-buttercms
 
-Source plugin for pulling blog posts, authors, categories, tags, and content fields into Gatsby from [Butter CMS](https://buttercms.com/).
+Source plugin for pulling blog posts, authors, categories, tags, and content fields into [Gatsby](https://www.gatsbyjs.org/) from [Butter CMS](https://buttercms.com/).
 
 ## Install
 `npm install --save gatsby-source-buttercms`
