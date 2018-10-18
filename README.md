@@ -3,9 +3,11 @@
 Source plugin for pulling blog posts, authors, categories, tags, and content fields into [Gatsby](https://www.gatsbyjs.org/) from [Butter CMS](https://buttercms.com/).
 
 ## Install
+
 `npm install --save gatsby-source-buttercms`
 
-## How to use
+## Usage
+
 ```JavaScript
 module.exports = {
   plugins: [
@@ -14,11 +16,13 @@ module.exports = {
       options: {
         authToken: 'your_api_token',
         contentFields: {
-          keys: [ // Comma delimited list of content field keys.
+          // Comma delimited list of content field keys.
+          keys: [ 
             'homepage_title',
             'homepage_headline'
           ],
-          test: 0 // Optional. Set to 1 to enable test mode for viewing draft content.
+          // Optional. Set to 1 to enable test mode for viewing draft content.
+          test: 0
         }
       }
     }
@@ -26,38 +30,47 @@ module.exports = {
 }
 ```
 
-## How to query : GraphQL
-
 ### Query Blog Posts
 ```GraphQL
 {
   allButterPost {
     edges {
       node {
-        slug
+        id
+        date
         url
-        published
         created
-        status
+        published
+        author {
+          first_name
+          last_name
+          email
+          slug
+          bio
+          title
+          linkedin_url
+          facebook_url
+          instagram_url
+          pinterest_url
+          twitter_handle
+          profile_image
+        }
+        categories {
+          name
+          slug
+        }
+        tags {
+          name
+          slug
+        }
+        featured_image
+        slug
         title
         body
         summary
         seo_title
         meta_description
-        author {
-          slug
-          first_name
-          last_name
-          email
-          bio
-          title
-          linkedin_url
-          facebook_url
-          pinterest_url
-          instagram_url
-          twitter_handle
-          profile_image
-        }
+        status
       }
     }
   }
