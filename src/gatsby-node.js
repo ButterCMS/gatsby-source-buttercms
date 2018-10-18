@@ -35,6 +35,8 @@ exports.sourceNodes = async (
     console.log('Error fetching posts', err);
   }
 
+  // TODO Document non-ButterCMS field `date`.
+
   const posts = postResult.data.data;
   posts.forEach(post => {
     const gatsbyPost = Object.assign(
@@ -57,6 +59,8 @@ exports.sourceNodes = async (
 
     createNode(gatsbyPost);
   });
+
+  // TODO Make content fields option in `gatsby-node.js` optional.
 
   // Fetch content fields.
   let contentFieldsResult;
@@ -89,8 +93,7 @@ exports.sourceNodes = async (
     });
   }
 
-  // Fetch pages.
-  // TODO
+  // TODO Fetch pages.
 
   setPluginStatus({
     status: {
