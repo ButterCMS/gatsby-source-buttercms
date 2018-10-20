@@ -15,15 +15,19 @@ module.exports = {
       resolve: 'gatsby-source-buttercms',
       options: {
         authToken: 'your_api_token',
+        // Optional. Returns values for the supplied content field keys.
         contentFields: {
-          // Comma delimited list of content field keys.
           keys: [
             'homepage_title',
             'homepage_headline'
           ],
           // Optional. Set to 1 to enable test mode for viewing draft content.
           test: 0
-        }
+        },
+        // Optional. Array of page slugs.
+        pages: [
+          'page_slug'
+        ]
       }
     }
   ]
@@ -81,6 +85,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 ```
 
 ### Query Content Fields
+
 ```GraphQL
 {
   allButterContent {
@@ -88,6 +93,21 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
       node {
         key
         value
+      }
+    }
+  }
+}
+```
+
+### Query Pages
+
+```GraphQL
+{
+  allButterPages {
+    edges {
+      node {
+        slug
+        # Your page’s fields …
       }
     }
   }
