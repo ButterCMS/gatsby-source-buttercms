@@ -10,10 +10,7 @@ const refactoredEntityTypes = {
 
 exports.sourceNodes = async (
   { actions, getNode, getNodes, createNodeId, hasNodeChanged, store },
-  {
-    authToken,
-    contentFields: { keys: contentFieldKeys = [], ...contentFieldOptions }
-  }
+  { authToken, contentFields }
 ) => {
   const { createNode, touchNode, setPluginStatus } = actions;
 
@@ -60,37 +57,39 @@ exports.sourceNodes = async (
     createNode(gatsbyPost);
   });
 
-  // TODO Make content fields option in `gatsby-node.js` optional.
-
   // Fetch content fields.
-  let contentFieldsResult;
-  try {
-    contentFieldsResult = await api.content.retrieve(
-      contentFieldKeys,
-      contentFieldOptions
-    );
-  } catch (err) {
-    console.log('Error fetching content fields', err);
-  }
+  if (contentFields) {
+    const { keys: contentFieldKeys = [], ...contentFieldOptions } = contentFields;
 
-  if (contentFieldsResult.data.data) {
-    const contentFields = Object.entries(contentFieldsResult.data.data);
-    contentFields.forEach(([key, value]) => {
-      const gatsbyContentField = Object.assign({}, key, value, {
-        id: key,
-        parent: null,
-        children: [],
-        internal: {
-          type: refactoredEntityTypes.contentField,
-          contentDigest: crypto
-            .createHash(`md5`)
-            .update(JSON.stringify([key, value]))
-            .digest(`hex`)
-        }
+    let contentFieldsResult;
+    try {
+      contentFieldsResult = await api.content.retrieve(
+        contentFieldKeys,
+        contentFieldOptions
+      );
+    } catch (err) {
+      console.log('Error fetching content fields', err);
+    }
+
+    if (contentFieldsResult.data.data) {
+      const contentFields = Object.entries(contentFieldsResult.data.data);
+      contentFields.forEach(([key, value]) => {
+        const gatsbyContentField = Object.assign({}, key, value, {
+          id: key,
+          parent: null,
+          children: [],
+          internal: {
+            type: refactoredEntityTypes.contentField,
+            contentDigest: crypto
+              .createHash(`md5`)
+              .update(JSON.stringify([key, value]))
+              .digest(`hex`)
+          }
+        });
+
+        createNode(gatsbyContentField);
       });
-
-      createNode(gatsbyContentField);
-    });
+    }
   }
 
   // TODO Fetch pages.
