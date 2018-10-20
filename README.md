@@ -17,7 +17,7 @@ module.exports = {
         authToken: 'your_api_token',
         contentFields: {
           // Comma delimited list of content field keys.
-          keys: [ 
+          keys: [
             'homepage_title',
             'homepage_headline'
           ],
@@ -31,6 +31,9 @@ module.exports = {
 ```
 
 ### Query Blog Posts
+
+The plugin maps all JSON fields documented in the [Butter CMS API Reference](https://buttercms.com/docs/api/#blog-engine) to GraphQL fields.
+
 ```GraphQL
 {
   allButterPost {
