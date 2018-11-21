@@ -7,7 +7,9 @@
     "gatsby-plugin",
     "gatsby-source-plugin",
     "butter",
-    "buttercms"
+    "buttercms",
+    "headless-cms",
+    "gatsby-cms"
   ],
   "scripts": {
     "build": "babel src --out-dir . --ignore **/__tests__",
@@ -16,10 +18,11 @@
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
   "main": "index.js",
-  "repository": "git@github.com:youfoundron/gatsby-source-buttercms.git",
+  "repository": "git@github.com:ButterCMS/gatsby-source-buttercms.git",
   "author": "Ron Gierlach <rongierlach@gmail.com>",
   "contributors": [
-    "Manuel Wieser <office@manuelwieser.com>"
+    "Manuel Wieser <office@manuelwieser.com>",
+    "Jake Lumetta <jake@buttercms.com>"
   ],
   "license": "GPL-3.0",
   "dependencies": {
