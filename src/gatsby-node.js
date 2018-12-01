@@ -129,6 +129,26 @@ exports.sourceNodes = async (
     });
   }
 
+  // TODO Fetch page types
+  // allButterPage(filter: {page_type: {eq: "page_type"}})
+  const gatsbyPageType = Object.assign(
+    { slug: 'page_slug', page_type: 'page_type', fields: 'fields' },
+    {
+      id: createNodeId('page_slug'),
+      parent: null,
+      children: [],
+      internal: {
+        type: refactoredEntityTypes.page,
+        mediaType: `application/json`,
+        contentDigest: crypto
+          .createHash(`md5`)
+          .update(JSON.stringify({}))
+          .digest(`hex`)
+      }
+    }
+  );
+  createNode(gatsbyPageType);
+
   setPluginStatus({
     status: {
       lastFetched: Date.now()
