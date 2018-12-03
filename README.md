@@ -27,6 +27,10 @@ module.exports = {
         // Optional. Array of page slugs.
         pages: [
           'page_slug'
+        ],
+        // Optional. Array of page types.
+        pageTypes: [
+          'page_type'
         ]
       }
     }

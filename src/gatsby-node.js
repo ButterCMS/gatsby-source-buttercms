@@ -11,7 +11,7 @@ const refactoredEntityTypes = {
 
 exports.sourceNodes = async (
   { actions, getNode, getNodes, createNodeId, hasNodeChanged, store },
-  { authToken, contentFields, pages }
+  { authToken, contentFields, pages, pageTypes }
 ) => {
   const { createNode, touchNode, setPluginStatus } = actions;
 
@@ -110,6 +110,26 @@ exports.sourceNodes = async (
       console.log('Error fetching pages', err);
     }
 
+    // Fetch page types
+    if (pageTypes) {
+      try {
+        for (let i = 0; i < pageTypes.length; i++) {
+          const pageTypeResult = await api.page.list(pageTypes[i], {
+            preview: 1
+          });
+          pageTypeResult.data.data.forEach(page => {
+            // allButterPage(filter: {page_type: {eq: "page_type"}})
+            page.fields.page_type = pageTypes[i];
+            pagesResult.push(page);
+          });
+        }
+      } catch (err) {
+        console.log('Error fetching page types', err);
+      }
+    }
+
+    console.log(pagesResult);
+
     pagesResult.forEach(page => {
       const gatsbyPage = Object.assign({ slug: page.slug }, page.fields, {
         id: createNodeId(page.slug),
@@ -128,26 +148,6 @@ exports.sourceNodes = async (
       createNode(gatsbyPage);
     });
   }
-
-  // TODO Fetch page types
-  // allButterPage(filter: {page_type: {eq: "page_type"}})
-  const gatsbyPageType = Object.assign(
-    { slug: 'page_slug', page_type: 'page_type', fields: 'fields' },
-    {
-      id: createNodeId('page_slug'),
-      parent: null,
-      children: [],
-      internal: {
-        type: refactoredEntityTypes.page,
-        mediaType: `application/json`,
-        contentDigest: crypto
-          .createHash(`md5`)
-          .update(JSON.stringify({}))
-          .digest(`hex`)
-      }
-    }
-  );
-  createNode(gatsbyPageType);
 
   setPluginStatus({
     status: {
