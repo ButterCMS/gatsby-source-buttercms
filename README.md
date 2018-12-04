@@ -111,6 +111,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
     edges {
       node {
         slug
+        page_type
         # Your page’s fields …
       }
     }
