@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-buttercms",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Gatsby source plugin for building websites using Butter CMS as a data source",
   "keywords": [
     "gatsby",
@@ -21,7 +21,7 @@
   "repository": "git@github.com:ButterCMS/gatsby-source-buttercms.git",
   "author": "Ron Gierlach <rongierlach@gmail.com>",
   "contributors": [
-    "Manuel Wieser <office@manuelwieser.com>",
+    "Manuel Wieser <office@manuelwieser.com> (https://manu.ninja/)",
     "Jake Lumetta <jake@buttercms.com>"
   ],
   "license": "GPL-3.0",
