@@ -115,6 +115,7 @@ exports.sourceNodes = async (
       try {
         for (let i = 0; i < pageTypes.length; i++) {
           const pageTypeResult = await api.page.list(pageTypes[i], {
+            page_size: Number.MAX_SAFE_INTEGER,
             preview: 1
           });
           pageTypeResult.data.data.forEach(page => {
