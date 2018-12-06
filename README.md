@@ -107,7 +107,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 
 ```GraphQL
 {
-  allButterPages {
+  allButterPage {
     edges {
       node {
         slug
