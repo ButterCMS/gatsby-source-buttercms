@@ -11,7 +11,7 @@ const refactoredEntityTypes = {
 
 exports.sourceNodes = async (
   { actions, getNode, getNodes, createNodeId, hasNodeChanged, store },
-  { authToken, contentFields, pages }
+  { authToken, contentFields, pages, pageTypes }
 ) => {
   const { createNode, touchNode, setPluginStatus } = actions;
 
@@ -110,20 +110,55 @@ exports.sourceNodes = async (
       console.log('Error fetching pages', err);
     }
 
-    pagesResult.forEach(page => {
-      const gatsbyPage = Object.assign({ slug: page.slug }, page.fields, {
-        id: createNodeId(page.slug),
-        parent: null,
-        children: [],
-        internal: {
-          type: refactoredEntityTypes.page,
-          mediaType: `application/json`,
-          contentDigest: crypto
-            .createHash(`md5`)
-            .update(JSON.stringify(page))
-            .digest(`hex`)
+    // Fetch page types
+    if (pageTypes) {
+      try {
+        for (let i = 0; i < pageTypes.length; i++) {
+          const pageTypeResult = await api.page.list(pageTypes[i], {
+            page_size: Number.MAX_SAFE_INTEGER,
+            preview: 1
+          });
+          pageTypeResult.data.data.forEach(page => {
+            // allButterPage(filter: {page_type: {eq: "page_type"}})
+            page.fields.page_type = pageTypes[i];
+            pagesResult.push(page);
+          });
         }
-      });
+      } catch (err) {
+        console.log('Error fetching page types', err);
+      }
+    }
+
+    // Fix GraphQL introspection for pages with different fields
+    const keys = pagesResult.reduce((acc, page) => {
+      const fields = Object.keys(page.fields);
+      return Array.from(new Set(acc.concat(fields)));
+    }, []);
+    const emptyPageObject = keys.reduce((acc, obj) => {
+      acc[obj] = null;
+      return acc;
+    }, {});
+    console.log(emptyPageObject);
+
+    pagesResult.forEach(page => {
+      const gatsbyPage = Object.assign(
+        emptyPageObject,
+        { slug: page.slug },
+        page.fields,
+        {
+          id: createNodeId(page.slug),
+          parent: null,
+          children: [],
+          internal: {
+            type: refactoredEntityTypes.page,
+            mediaType: `application/json`,
+            contentDigest: crypto
+              .createHash(`md5`)
+              .update(JSON.stringify(page))
+              .digest(`hex`)
+          }
+        }
+      );
 
       createNode(gatsbyPage);
     });

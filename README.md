@@ -27,6 +27,10 @@ module.exports = {
         // Optional. Array of page slugs.
         pages: [
           'page_slug'
+        ],
+        // Optional. Array of page types.
+        pageTypes: [
+          'page_type'
         ]
       }
     }
@@ -107,6 +111,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
     edges {
       node {
         slug
+        page_type
         # Your page’s fields …
       }
     }
