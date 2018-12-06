@@ -129,36 +129,21 @@ exports.sourceNodes = async (
       }
     }
 
-    // Fix GraphQL introspection for pages with different fields
-    const keys = pagesResult.reduce((acc, page) => {
-      const fields = Object.keys(page.fields);
-      return Array.from(new Set(acc.concat(fields)));
-    }, []);
-    const emptyPageObject = keys.reduce((acc, obj) => {
-      acc[obj] = null;
-      return acc;
-    }, {});
-    console.log(emptyPageObject);
-
     pagesResult.forEach(page => {
-      const gatsbyPage = Object.assign(
-        emptyPageObject,
-        { slug: page.slug },
-        page.fields,
-        {
-          id: createNodeId(page.slug),
-          parent: null,
-          children: [],
-          internal: {
-            type: refactoredEntityTypes.page,
-            mediaType: `application/json`,
-            contentDigest: crypto
-              .createHash(`md5`)
-              .update(JSON.stringify(page))
-              .digest(`hex`)
-          }
+      const data = Object.assign({ slug: page.slug }, page.fields);
+      const gatsbyPage = Object.assign(data, {
+        id: createNodeId(page.slug),
+        parent: null,
+        children: [],
+        internal: {
+          type: refactoredEntityTypes.page,
+          mediaType: `application/json`,
+          contentDigest: crypto
+            .createHash(`md5`)
+            .update(JSON.stringify(data))
+            .digest(`hex`)
         }
-      );
+      });
 
       createNode(gatsbyPage);
     });
