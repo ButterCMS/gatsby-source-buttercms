@@ -97,17 +97,21 @@ exports.sourceNodes = async (
   }
 
   // Fetch pages.
-  if (pages) {
+  if (pages || pageTypes) {
     const pagesResult = [];
-    try {
-      for (let i = 0; i < pages.length; i++) {
-        const pageResult = await api.page.retrieve('*', pages[i], {
-          preview: 1
-        });
-        pagesResult.push(pageResult.data.data);
+
+    // Fetch single pages
+    if (pages) {
+      try {
+        for (let i = 0; i < pages.length; i++) {
+          const pageResult = await api.page.retrieve('*', pages[i], {
+            preview: 1
+          });
+          pagesResult.push(pageResult.data.data);
+        }
+      } catch (err) {
+        console.log('Error fetching pages', err);
       }
-    } catch (err) {
-      console.log('Error fetching pages', err);
     }
 
     // Fetch page types
