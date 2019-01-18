@@ -88,7 +88,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 }
 ```
 
-### Query Content Fields
+### Query Content Fields(Object)
 
 ```GraphQL
 {
@@ -103,11 +103,28 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 }
 ```
 
+### Query Content Fields(Collection)
+
+```GraphQL
+{
+  allButterContentField {
+    edges {
+      node {
+        key
+        value{
+          #Your collection fields
+        }
+      }
+    }
+  }
+}
+```
+
 ### Query Pages
 
 ```GraphQL
 {
-  allButterPage {
+  allButterCollection {
     edges {
       node {
         slug
