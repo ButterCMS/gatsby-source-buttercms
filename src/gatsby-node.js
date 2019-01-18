@@ -5,18 +5,32 @@ const typePrefix = 'butter__';
 
 const refactoredEntityTypes = {
   post: `${typePrefix}POST`,
-  contentField: `${typePrefix}CONTENT`,
-  page: `${typePrefix}PAGE`
+  page: `${typePrefix}PAGE`,
+  contentField: `${typePrefix}CONTENT_FIELD`,
+  collection: `${typePrefix}COLLECTION`
 };
 
-exports.sourceNodes = async (
-  { actions, getNode, getNodes, createNodeId, hasNodeChanged, store },
-  { authToken, contentFields, pages, pageTypes }
-) => {
-  const { createNode, touchNode, setPluginStatus } = actions;
+exports.sourceNodes = async ({
+  actions,
+  getNode,
+  getNodes,
+  createNodeId,
+  hasNodeChanged,
+  store
+}, {
+  authToken,
+  contentFields,
+  pages,
+  pageTypes
+}) => {
+  const {
+    createNode,
+    touchNode,
+    setPluginStatus
+  } = actions;
 
   // Authenticate ButterCMS API client.
-  const api = butter(authToken);
+  const api = butter(authToken, false, 20000);
 
   // Touch existing ButterCMS nodes so Gatsby doesn’t garbage collect them.
   Object.values(store.getState().nodes)
@@ -34,30 +48,30 @@ exports.sourceNodes = async (
   }
 
   // TODO Document non-ButterCMS field `date`.
-
-  const posts = postResult.data.data;
-  posts.forEach(post => {
-    const gatsbyPost = Object.assign(
-      { date: new Date(post.published).toLocaleDateString('en-US') },
-      post,
-      {
-        id: createNodeId(post.slug),
-        parent: null,
-        children: [],
-        internal: {
-          type: refactoredEntityTypes.post,
-          mediaType: `application/json`,
-          contentDigest: crypto
-            .createHash(`md5`)
-            .update(JSON.stringify(post))
-            .digest(`hex`)
+  if (postResult.data.data) {
+    const posts = postResult.data.data;
+    posts.forEach(post => {
+      const gatsbyPost = Object.assign({
+        date: new Date(post.published).toLocaleDateString('en-US')
+      },
+        post, {
+          id: createNodeId(post.slug),
+          parent: null,
+          children: [],
+          internal: {
+            type: refactoredEntityTypes.post,
+            mediaType: `application/json`,
+            contentDigest: crypto
+              .createHash(`md5`)
+              .update(JSON.stringify(post))
+              .digest(`hex`)
+          }
         }
-      }
-    );
+      );
 
-    createNode(gatsbyPost);
-  });
-
+      createNode(gatsbyPost);
+    });
+  }
   // Fetch content fields.
   if (contentFields) {
     const {
@@ -65,7 +79,7 @@ exports.sourceNodes = async (
       ...contentFieldOptions
     } = contentFields;
 
-    let contentFieldsResult;
+    var contentFieldsResult;
     try {
       contentFieldsResult = await api.content.retrieve(
         contentFieldKeys,
@@ -76,23 +90,75 @@ exports.sourceNodes = async (
     }
 
     if (contentFieldsResult.data.data) {
-      const contentFields = Object.entries(contentFieldsResult.data.data);
-      contentFields.forEach(([key, value]) => {
-        const gatsbyContentField = Object.assign({}, key, value, {
+
+      const entries = Object.entries(contentFieldsResult.data.data)
+
+      let allCollection = [],
+        allfields = [];
+
+      //Extract Collections and Content Fields into separate variables
+      entries.forEach(([key, value]) => {
+        if (typeof (value) == "object") {
+          allCollection.push({
+            key,
+            value
+          })
+        } else {
+          allfields.push({
+            key,
+            value
+          })
+        }
+      })
+
+      //Create Node For Each Collection
+      allCollection.forEach(({
+        key,
+        value
+      }) => {
+        const collectionNode = Object.assign({}, {
           id: key,
           parent: null,
           children: [],
+          key: key,
+          value: value,
           internal: {
-            type: refactoredEntityTypes.contentField,
+            type: refactoredEntityTypes.collection,
+            content: JSON.stringify(value),
             contentDigest: crypto
               .createHash(`md5`)
               .update(JSON.stringify([key, value]))
               .digest(`hex`)
-          }
-        });
+          },
+        })
 
-        createNode(gatsbyContentField);
-      });
+        createNode(collectionNode)
+      })
+
+      //Create Node For Each Content Field
+      allfields.forEach(({
+        key,
+        value
+      }) => {
+        const contentFieldNode = Object.assign({}, {
+          id: key,
+          parent: null,
+          children: [],
+          key: key,
+          value: value,
+          internal: {
+            type: refactoredEntityTypes.contentField,
+            content: JSON.stringify(value),
+            contentDigest: crypto
+              .createHash(`md5`)
+              .update(JSON.stringify([key, value]))
+              .digest(`hex`)
+          },
+        })
+
+        createNode(contentFieldNode)
+      })
+
     }
   }
 
@@ -134,7 +200,9 @@ exports.sourceNodes = async (
     }
 
     pagesResult.forEach(page => {
-      const data = Object.assign({ slug: page.slug }, page.fields);
+      const data = Object.assign({
+        slug: page.slug
+      }, page.fields);
       const gatsbyPage = Object.assign(data, {
         id: createNodeId(page.slug),
         parent: null,
