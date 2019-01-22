@@ -92,7 +92,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 
 ```GraphQL
 {
-  allButterContent {
+  allButterContentField {
     edges {
       node {
         key
@@ -107,7 +107,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 
 ```GraphQL
 {
-  allButterContentField {
+  allButterCollection {
     edges {
       node {
         key
@@ -124,7 +124,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 
 ```GraphQL
 {
-  allButterCollection {
+  allButterPage {
     edges {
       node {
         slug
