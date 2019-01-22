@@ -88,15 +88,32 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 }
 ```
 
-### Query Content Fields
+### Query Content Fields(Object)
 
 ```GraphQL
 {
-  allButterContent {
+  allButterContentField {
     edges {
       node {
         key
         value
+      }
+    }
+  }
+}
+```
+
+### Query Content Fields(Collection)
+
+```GraphQL
+{
+  allButterCollection {
+    edges {
+      node {
+        key
+        value{
+          #Your collection fields
+        }
       }
     }
   }
