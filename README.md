@@ -135,3 +135,7 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
   }
 }
 ```
+
+### Other
+
+View our [Gatsby Blog engine](https://buttercms.com/gatsbyjs-blog-engine/) and [Gatsby Full CMS](https://buttercms.com/gatsbyjs-cms/) for other examples of using ButterCMS with Gatsby.
