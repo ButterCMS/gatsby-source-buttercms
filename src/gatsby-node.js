@@ -37,19 +37,21 @@ exports.sourceNodes = async ({
     .filter(n => n.internal.type.slice(0, 8) === typePrefix)
     .forEach(n => touchNode(n.id));
 
-  // Fetch posts.
-  let postResult;
-  try {
-    postResult = await api.post.list({
-      page_size: Number.MAX_SAFE_INTEGER
-    });
-  } catch (err) {
-    console.log('Error fetching posts', err);
-  }
 
-  // TODO Document non-ButterCMS field `date`.
-  if (postResult.data.data) {
-    const posts = postResult.data.data;
+  // Paginate through all blog posts
+  let page = 1;
+  while(page !== null) {
+    let postResult = null;
+
+    try {
+      postResult = await api.post.list({
+        page: page, page_size: 100
+      });
+    } catch (err) {
+      console.log('Error fetching posts', err);
+    }
+
+    let posts = postResult.data.data;
     posts.forEach(post => {
       const gatsbyPost = Object.assign({
         date: new Date(post.published).toLocaleDateString('en-US')
@@ -71,7 +73,11 @@ exports.sourceNodes = async ({
 
       createNode(gatsbyPost);
     });
+
+    // If there's another page, we paginate
+    page = postResult.data.meta.next_page;
   }
+
   // Fetch content fields.
   if (contentFields) {
     const {
