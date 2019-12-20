@@ -62,7 +62,7 @@ exports.sourceNodes = async ({
           children: [],
           internal: {
             type: refactoredEntityTypes.post,
-            mediaType: `application/json`,
+            mediaType: `text/plain`,
             contentDigest: crypto
               .createHash(`md5`)
               .update(JSON.stringify(post))
@@ -215,7 +215,7 @@ exports.sourceNodes = async ({
         children: [],
         internal: {
           type: refactoredEntityTypes.page,
-          mediaType: `application/json`,
+          mediaType: `text/plain`,
           contentDigest: crypto
             .createHash(`md5`)
             .update(JSON.stringify(data))
