@@ -20,8 +20,8 @@ exports.sourceNodes = async ({
 }, {
   authToken,
   contentFields,
-  pages,
-  pageTypes
+  pageTypes,
+  locales
 }) => {
   const {
     createNode,
@@ -117,29 +117,31 @@ exports.sourceNodes = async ({
         }
       })
 
-      //Create Node For Each Collection
-      allCollection.forEach(({
-        key,
-        value
-      }) => {
-        const collectionNode = Object.assign({}, {
-          id: key,
-          parent: null,
-          children: [],
-          key: key,
-          value: value,
-          internal: {
-            type: refactoredEntityTypes.collection,
-            content: JSON.stringify(value),
-            contentDigest: crypto
-              .createHash(`md5`)
-              .update(JSON.stringify([key, value]))
-              .digest(`hex`)
-          },
-        })
+      for (const locale of locales) {
+        //Create Node For Each Collection
+        allCollection.forEach(({
+          key,
+          value
+        }) => {
+          const collectionNode = Object.assign({}, {
+            id: key,
+            parent: null,
+            children: [],
+            key: key,
+            value: value,
+            internal: {
+              type: refactoredEntityTypes.collection,
+              content: JSON.stringify(value),
+              contentDigest: crypto
+                .createHash(`md5`)
+                .update(JSON.stringify([key, value]))
+                .digest(`hex`)
+            },
+          })
 
-        createNode(collectionNode)
-      })
+          createNode(collectionNode)
+        })
+      }
 
       //Create Node For Each Content Field
       allfields.forEach(({
@@ -168,31 +170,16 @@ exports.sourceNodes = async ({
     }
   }
 
-  // Fetch pages.
-  if (pages || pageTypes) {
-    const pagesResult = [];
-
-    // Fetch single pages
-    if (pages) {
-      try {
-        for (let i = 0; i < pages.length; i++) {
-          const pageResult = await api.page.retrieve('*', pages[i], {
-            preview: 1
-          });
-          pagesResult.push(pageResult.data.data);
-        }
-      } catch (err) {
-        console.log('Error fetching pages', err);
-      }
-    }
-
-    // Fetch page types
+  for (const locale of locales) {
+    // Fetch pages.
     if (pageTypes) {
+      const pagesResult = [];
+
       try {
         for (let i = 0; i < pageTypes.length; i++) {
           const pageTypeResult = await api.page.list(pageTypes[i], {
             page_size: Number.MAX_SAFE_INTEGER,
-            preview: 1
+            locale: locale
           });
           pageTypeResult.data.data.forEach(page => {
             // allButterPage(filter: {page_type: {eq: "page_type"}})
@@ -203,28 +190,29 @@ exports.sourceNodes = async ({
       } catch (err) {
         console.log('Error fetching page types', err);
       }
-    }
 
-    pagesResult.forEach(page => {
-      const data = Object.assign({
-        slug: page.slug
-      }, page.fields);
-      const gatsbyPage = Object.assign(data, {
-        id: createNodeId(page.slug),
-        parent: null,
-        children: [],
-        internal: {
-          type: refactoredEntityTypes.page,
-          mediaType: `text/plain`,
-          contentDigest: crypto
-            .createHash(`md5`)
-            .update(JSON.stringify(data))
-            .digest(`hex`)
-        }
+      pagesResult.forEach(page => {
+        const data = Object.assign({
+          slug: page.slug
+        }, page.fields);
+        const gatsbyPage = Object.assign(data, {
+          id: createNodeId(`${locale || 'en'}-${page.slug}`),
+          parent: null,
+          children: [],
+          internal: {
+            type: refactoredEntityTypes.page,
+            mediaType: `text/plain`,
+            contentDigest: crypto
+              .createHash(`md5`)
+              .update(JSON.stringify(data))
+              .digest(`hex`)
+          },
+          locale: locale
+        });
+
+        createNode(gatsbyPage);
       });
-
-      createNode(gatsbyPage);
-    });
+    }
   }
 
   setPluginStatus({
