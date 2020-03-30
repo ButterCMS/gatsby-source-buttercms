@@ -175,6 +175,8 @@ exports.sourceNodes = async ({
     if (pageTypes) {
       const pagesResult = [];
 
+      pageTypes.push('*');
+      
       try {
         for (let i = 0; i < pageTypes.length; i++) {
           const pageTypeResult = await api.page.list(pageTypes[i], {
