@@ -192,26 +192,31 @@ exports.sourceNodes = async ({
       } else {
         await create_nodes_collections(null)
       }
-
     }
   }
 
   async function fetch_pages (locale) {
     // Fetch pages.
-    if (pageTypes) {
-      const pagesResult = [];
-      var params = {}
+    if (!pageTypes) {
+      pageTypes = []
+    }
+    const pagesResult = [];
+    var params = {}
 
-      if (locale) {
-        params.locale = locale
-      }
+    if (locale) {
+      params.locale = locale
+    }
 
-      pageTypes.push('*');
-      
-      try {
-        for (let i = 0; i < pageTypes.length; i++) {
-          const pageTypeResult = await api.page.list(pageTypes[i], {
-            page_size: Number.MAX_SAFE_INTEGER,
+    pageTypes.push('*');
+
+    try {
+      for (let i = 0; i < pageTypes.length; i++) {
+        let page = 1;
+        while (page !== null) {
+          let pageTypeResult = null
+          pageTypeResult = await api.page.list(pageTypes[i], {
+            page: page,
+            page_size: 100,
             ...params,
           });
           pageTypeResult.data.data.forEach(page => {
@@ -219,40 +224,41 @@ exports.sourceNodes = async ({
             page.fields.page_type = pageTypes[i];
             pagesResult.push(page);
           });
+          page = pageTypeResult.data.meta.next_page;
         }
-      } catch (err) {
-        console.log('Error fetching page types', err);
+      }
+    } catch (err) {
+      console.log('Error fetching page types', err);
+    }
+
+    pagesResult.forEach(page => {
+      const data = Object.assign({
+        slug: page.slug
+      }, page.fields);
+
+      if (locale) {
+        var uniqueId = `${locale || 'en'}-${page.slug}`
+      } else {
+        var uniqueId = page.slug
       }
 
-      pagesResult.forEach(page => {
-        const data = Object.assign({
-          slug: page.slug
-        }, page.fields);
-
-        if (locale) {
-          var uniqueId = `${locale || 'en'}-${page.slug}`
-        } else {
-          var uniqueId = page.slug
-        }
-
-        const gatsbyPage = Object.assign(data, {
-          id: createNodeId(uniqueId),
-          parent: null,
-          children: [],
-          internal: {
-            type: refactoredEntityTypes.page,
-            mediaType: `text/plain`,
-            contentDigest: crypto
-              .createHash(`md5`)
-              .update(JSON.stringify(data))
-              .digest(`hex`)
-          },
-          ...params,
-        });
-
-        createNode(gatsbyPage);
+      const gatsbyPage = Object.assign(data, {
+        id: createNodeId(uniqueId),
+        parent: null,
+        children: [],
+        internal: {
+          type: refactoredEntityTypes.page,
+          mediaType: `text/plain`,
+          contentDigest: crypto
+            .createHash(`md5`)
+            .update(JSON.stringify(data))
+            .digest(`hex`)
+        },
+        ...params,
       });
-    }
+
+      createNode(gatsbyPage);
+    });
   }
 
 
