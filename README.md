@@ -11,28 +11,22 @@ Source plugin for pulling blog posts, authors, categories, tags, and content fie
 ```JavaScript
 module.exports = {
   plugins: [
-    {
-      resolve: 'gatsby-source-buttercms',
-      options: {
-        authToken: 'your_api_token',
-        // Optional. Returns values for the supplied content field keys.
-        contentFields: {
-          keys: [
-            'homepage_title',
-            'homepage_headline'
-          ],
-          // Optional. Set to 1 to enable test mode for viewing draft content.
-          test: 0
-        },
-        // Optional. Array of page slugs.
-        pages: [
-          'page_slug'
-        ],
-        // Optional. Array of page types.
-        pageTypes: [
-          'page_type'
-        ]
-      }
+     {
+        resolve: `gatsby-source-buttercms`,
+        options: {
+          authToken: `<API_TOKEN>`,
+          // Optional array of Collection key 
+          contentFields: {
+            keys: [`collection_key`],
+            // Optional. Set to 1 to enable test mode for viewing draft content.
+            test: 0,
+          },
+          // Optional array of page type keys
+          pageTypes: [`page_type_key`],
+          // Optional array of locales (if configured in your account)
+          locales: [`en`, `es`, `fr`],
+          preview: 1 // Return draft content
+      },
     }
   ]
 }
