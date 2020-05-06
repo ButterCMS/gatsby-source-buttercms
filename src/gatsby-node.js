@@ -21,7 +21,8 @@ exports.sourceNodes = async ({
   authToken,
   contentFields,
   pageTypes,
-  locales
+  locales,
+  preview
 }) => {
   const {
     createNode,
@@ -42,10 +43,15 @@ exports.sourceNodes = async ({
   let page = 1;
   while(page !== null) {
     let postResult = null;
+    let params = {}
+
+    if (preview) {
+      params.preview = preview
+    }
 
     try {
       postResult = await api.post.list({
-        page: page, page_size: 100
+        page: page, page_size: 100, ...params
       });
     } catch (err) {
       console.log('Error fetching posts', err);
