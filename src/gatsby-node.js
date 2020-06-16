@@ -191,13 +191,6 @@ exports.sourceNodes = async ({
         })
       }
 
-      if (locales && locales.length > 0) {
-        for (const locale of locales) {
-          await create_nodes_collections(locale);
-        }
-      } else {
-        await create_nodes_collections(null)
-      }
     }
   }
 
@@ -270,9 +263,11 @@ exports.sourceNodes = async ({
 
   if (locales && locales.length > 0) {
     for (const locale of locales) {
+      await create_nodes_collections(locale);
       await fetch_pages(locale);
     }
   } else {
+    await create_nodes_collections(null);
     await fetch_pages(null);
   }
 
