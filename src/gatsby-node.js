@@ -206,6 +206,10 @@ exports.sourceNodes = async ({
       params.locale = locale
     }
 
+    if (preview) {
+      params.preview = preview
+    }
+
     pageTypes.push('*');
 
     try {
