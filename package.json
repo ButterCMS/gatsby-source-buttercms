@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-buttercms",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Gatsby source plugin for building websites using ButterCMS as a data source",
   "keywords": [
     "gatsby",
