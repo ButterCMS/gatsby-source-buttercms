@@ -22,7 +22,8 @@ exports.sourceNodes = async ({
   contentFields,
   pageTypes,
   locales,
-  preview
+  preview,
+  levels
 }) => {
   const {
     createNode,
@@ -208,6 +209,10 @@ exports.sourceNodes = async ({
 
     if (preview) {
       params.preview = preview
+    }
+
+    if (levels) {
+      params.levels = levels
     }
 
     pageTypes.push('*');
