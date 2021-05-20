@@ -117,13 +117,22 @@ The plugin maps all JSON fields documented in the [Butter CMS API Reference](htt
 
 ### Query Pages
 
+Page meta data is available in `meta` object. The `slug` and `page_title` fields are now deprecated and will be removed on 20/06/2021. Please, use `meta` field to get the `slug` and `page_type`.
+
 ```GraphQL
 {
   allButterPage {
     edges {
       node {
-        slug
-        page_type
+        slug # is deprecated
+        page_type # is deprecated
+        meta {
+          published
+          updated
+          name
+          page_type
+          slug
+        }
         # Your page’s fields …
       }
     }

@@ -241,7 +241,14 @@ exports.sourceNodes = async ({
 
     pagesResult.forEach(page => {
       const data = Object.assign({
-        slug: page.slug
+        slug: page.slug,
+        meta: {
+          slug: page.slug,
+          name: page.name,
+          published: page.published,
+          updated: page.updated,
+          page_type: page.page_type || '*',
+        }
       }, page.fields);
 
       if (locale) {
