@@ -25,7 +25,8 @@ module.exports = {
               pageTypes: [`page_type_key`],
               // Optional array of locales (if configured in your account)
               locales: [`en`, `es`, `fr`],
-              preview: 1 // Return draft content
+              preview: 1, // Return draft content
+              levels: 2 // Optional. Defaults to 2. Defines the levels of relationships to serialize
         },
     }
   ]
