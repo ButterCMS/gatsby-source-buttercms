@@ -1,4 +1,4 @@
-# gatsby-source-buttercms
+# ButterCMS Gatsby Source Plugin
 
 Source plugin for pulling blog posts, authors, categories, tags, and content fields into [Gatsby](https://www.gatsbyjs.org/) from [ButterCMS](https://buttercms.com/).
 
