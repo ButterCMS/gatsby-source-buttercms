@@ -37,7 +37,7 @@ exports.sourceNodes = async ({
   // Touch existing ButterCMS nodes so Gatsby doesn’t garbage collect them.
   Object.values(store.getState().nodes)
     .filter(n => n.internal.type.slice(0, 8) === typePrefix)
-    .forEach(n => touchNode(n.id));
+    .forEach(n => touchNode(n));
 
 
   // Paginate through all blog posts
