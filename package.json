@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-buttercms",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Gatsby source plugin for building websites using ButterCMS as a data source",
   "keywords": [
     "gatsby",
@@ -29,7 +29,7 @@
     "buttercms": "^1.1.1"
   },
   "peerDependencies": {
-   "gatsby": "^2.22.3 || ^3.0.0"
+   "gatsby": ">=2.22.3 <= 4.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
