@@ -52,7 +52,7 @@ exports.sourceNodes = async ({
 
     try {
       postResult = await api.post.list({
-        page: page, page_size: 100, ...params
+        page: page, page_size: 20, ...params
       });
     } catch (err) {
       console.log('Error fetching posts', err);
@@ -224,7 +224,7 @@ exports.sourceNodes = async ({
           let pageTypeResult = null
           pageTypeResult = await api.page.list(pageTypes[i], {
             page: page,
-            page_size: 100,
+            page_size: 20,
             ...params,
           });
           pageTypeResult.data.data.forEach(page => {
