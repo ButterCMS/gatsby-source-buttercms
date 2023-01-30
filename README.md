@@ -8,6 +8,8 @@ Source plugin for pulling blog posts, authors, categories, tags, and content fie
 
 ## Usage
 
+Add to your `gatsby-config.js`.
+
 ```JavaScript
 module.exports = {
   plugins: [
@@ -17,14 +19,14 @@ module.exports = {
               authToken: `<API_TOKEN>`,
               // Optional array of Collection key 
               contentFields: {
-                keys: [`collection_key`],
+                keys: [`navigation_menu`],
                 // Optional. Set to 1 to enable test mode for viewing draft content.
                 test: 0,
               },
               // Optional array of page type keys
-              pageTypes: [`page_type_key`],
+              pageTypes: [`landing-page`],
               // Optional array of locales (if configured in your account)
-              locales: [`en`, `es`, `fr`],
+              locales: [],
               preview: 1, // Return draft content
               levels: 2 // Optional. Defaults to 2. Defines the levels of relationships to serialize
         },
