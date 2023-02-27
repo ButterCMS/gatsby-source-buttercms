@@ -1,3 +1,5 @@
+![recommended node version](https://img.shields.io/badge/node-v18-green)
+
 # ButterCMS Gatsby Source Plugin
 
 Source plugin for pulling blog posts, authors, categories, tags, and content fields into [Gatsby](https://www.gatsbyjs.org/) from [ButterCMS](https://buttercms.com/).

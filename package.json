@@ -26,15 +26,18 @@
   ],
   "license": "GPL-3.0",
   "dependencies": {
-    "buttercms": "^1.1.1"
+    "buttercms": "^1.2.9"
   },
   "peerDependencies": {
-   "gatsby": ">=2.22.3 <= 4.14.1"
+    "gatsby": "^5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "prettier": "1.14.3"
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "prettier": "2.8.4"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
