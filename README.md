@@ -2,13 +2,15 @@
 
 # ButterCMS Gatsby Source Plugin
 
-Source plugin for pulling blog posts, authors, categories, tags, and content fields into [Gatsby](https://www.gatsbyjs.org/) from [ButterCMS](https://buttercms.com/).
+Source plugin for pulling blog posts, authors, categories, tags, and content fields into [Gatsby](https://www.gatsbyjs.org/) from [ButterCMS](https://buttercms.com/). 
+
+*This version (3.0.0) is designed to work with Gatsby 5.0 and above, which only supports node 18 and above. If you want to use our plugin with Gatsby 4, you can use v2.2.6 of this package.*
 
 ## Install
 
-`npm install --save gatsby-source-buttercms`
+`npm install` to install this repo as a standalone, or `npm install --save gatsby-source-buttercms` to install the gatsy-source-buttercms package into your current gatsby project.
 
-## Usage
+## Configuration
 
 Add to your `gatsby-config.js`.
 
@@ -36,6 +38,8 @@ module.exports = {
   ]
 }
 ```
+
+## Usage
 
 ### Query Blog Posts
 
